@@ -1,0 +1,10 @@
+{
+  "description": "Brick Game Image",
+  "src": "/assets/smb-tiles.png",
+  "width": 16,
+  "height": 16,
+  "frameSet": {
+    "default": { "x": 0, "y": 0 },
+    "cycle": { "xRange": 3, "x": 16, "y": 0 }
+  }
+}
