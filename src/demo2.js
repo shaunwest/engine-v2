@@ -1,7 +1,7 @@
 import { getElementById, render } from './demo-helpers';
 import { loadGameImageSet } from './game-image/game-image-loader.js';
 import { createGameImageSet } from './game-image/game-image.js';
-import { createGameAnimationSet, createFrameTable } from './animation/game-animation-set.js';
+import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createTimer, getInitialTimerState } from './timer.js';
 
 const animationSetConfig = {
@@ -23,8 +23,6 @@ const animationSetConfig = {
   }
 };
 
-const tileSetConfig = ['brick', 'question'];
-const tileSize = 16;
 const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
 
@@ -37,10 +35,9 @@ loadGameImageSet('/data/tile-game-images.json')
       render(getElementById('question'), gameImageSet('question')('default', 0));
 
       const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
-      const frameTable = createFrameTable(gameAnimationSet);
 
       timer(frameCount =>
-        render(getElementById('questionAnimation2'), frameTable(frameCount).question));
+        render(getElementById('questionAnimation2'), gameAnimationSet('question', frameCount)));
     },
     error => console.log('Error:', error)
   );

@@ -1,0 +1,13 @@
+{
+  "mario": {
+    "description": "Mario Game Image",
+    "width": 32,
+    "height": 32,
+    "src": "/assets/smb-sprites.png",
+    "frameSet": {
+      "idle": { "x": 96, "y": 0 },
+      "jump": { "x": 0, "y": 0 },
+      "walk": { "xRange": 2, "x": 32, "y": 0 }
+    }
+  }
+}

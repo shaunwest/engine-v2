@@ -37,19 +37,3 @@ export const createGameAnimationSet = (gameAnimationSetConfig, gameImageSet) => 
     return (typeof frameCount === 'undefined') ? gameAnimation : gameAnimation(frameCount);
   };
 }
-
-// gameAnimationSet -> Int -> frameTable
-export const createFrameTable = gameAnimationSet => {
-  const frameTable = {};
-  return frameCount => {
-    const gameAnimationSetObject = gameAnimationSet();
-
-    for (const key in gameAnimationSetObject) {
-      if (gameAnimationSetObject.hasOwnProperty(key)) {
-        frameTable[key] = gameAnimationSetObject[key](frameCount);
-      }
-    }
-
-    return frameTable;
-  }
-}

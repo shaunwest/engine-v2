@@ -53,11 +53,11 @@ export const createGameImageSet = gameImageSetConfig => {
     return gameImageSet;
   }, {});
 
-  return (gameImageId, frameSetId, frameIndex) => {
-    if (typeof gameImageId === 'undefined' && typeof frameSetId === 'undefined')
+  return (gameImageId) => {
+    if (typeof gameImageId === 'undefined')
       return gameImageSet;
     else if (gameImageSet[gameImageId])
-      return gameImageSet[gameImageId]; //(frameSetId, frameIndex);
+      return gameImageSet[gameImageId];
     else
       throw `The provided game image id '${ gameImageId }' was not found in this game image set`;
   }

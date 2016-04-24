@@ -43,8 +43,8 @@ gameImageSet
     const gameImageSet = createGameImageSet(gameImageSetConfig);
 
     // String, String, Int -> gameImage
-    const gameImage = gameImageSet('brick', 'default', 0);  // the first frame of the default frames for 'brick' gameIamge
-    const gameImageSetConfig = gameImageSet();              // full gameImageSetConfig
+    const gameImage = gameImageSet('brick');    // returns the 'brick' gameIamge
+    const gameImageSetConfig = gameImageSet();  // full gameImageSetConfig
 
 gameAnimation
 -------------
@@ -93,7 +93,9 @@ Returns a frame table for the given gameAnimationSet/gameImageSet combination
 
 tileSetConfig
 -------------
-A maping of animations to indexes
+TODO: rename ot tileMapconfig?
+
+A mapping of indexes to gameAnimations
 
     [
       "brickAnimation",
@@ -120,28 +122,31 @@ NOTE: layouts must be mutable for performance reasons
     // Int, Int -> *
     const cell = fixedLayout2d(0, 1); // returns value from tileSetConfig that corresponds to row 0, column 1
 
-renderFixed2d
----------------------
-Draws a tile onto a portion of the main rendering canvas.
+range2d
+-------
+Simply iterates over a given 2d space. Used to render a subsection of a layout.
 
-    const currentFrames = frameTable(frameCount);
+    const viewport = { x: 0, y: 0, width: 10, height: 10 };
+    range2d(viewport, (col, row) => render2d(image, col * 16, row * 16));
 
-    // Canvas -> renderFixed2d
-    const renderFixed2d = createFixed2dRenderer(canvas);
+render2d
+--------
+Draws an image onto a portion of the main rendering canvas.
 
-    // Int, Int, Int, [String] -> undefined
-    renderFixed2d(frameId, x, y, currentFrames);
+    // Canvas -> render2d
+    const render2d = create2dRenderer(canvas);
+
+    // Canvas, Int, Int -> undefined
+    render2d(frame, x, y);
 
 spriteSetConfig
 ---------------
+A mapping of indexes to gameImage and other config data
+
     {
-      {
+      "mario": {
         "description": "mario sprite",
-        "gameImage": "marioGameImage",
-        "spawn": {
-          "x": 100,
-          "y": 150
-        },
+        "gameImage": "mario",
         "ai": {
           "type": "basic" 
         },
@@ -158,34 +163,37 @@ spriteSetConfig
       }
     }
 
-freeLayout2dConfig
-------------------
+spriteLayout2dConfig
+--------------------
 
-{
-  data: [{ id: 0, x: 10, y: 10}, { id: 1, x: 50, y: 75 }],
-  spriteSet: 'foobarSprites'
-}
+    {
+      data: [{ id: 0, x: 10, y: 10}, { id: 1, x: 50, y: 75 }],
+      spriteSet: 'foobarSprites'
+    }
 
-freeLayout2d
--------------
-NOTE: layouts must be mutable for performance reasons
+spriteClassSet
+--------------
+TODO: actually, maybe game image set should be entirely decoupled here, so that
+logic and rendering (game image stuff) are not connected...
 
-    // [Object], Int -> freeLayout2d
-    const freeLayout2d = createFreeLayout2d(layout, cellSize);
+    const spriteSet = createSpriteSet(spriteSetConfig, gameImageSet);
+    const sprite = spriteSet('mario');
 
-    // Int, Int -> [Object]
-    const sprites = freeLayout2d(0, 1);
+spriteLayout2d
+--------------
+A collection of sprite instances
+Would this get passed into createSegments?
 
-renderFree2d
-------------
+    const spriteLayout2d = createSpriteLayout2d(layout, spriteSetConfig);
+    const sprite = spriteLayout2d(0);
+    const sprites = spriteLayout2d(viewport);
 
-Draws a tile onto a portion of the main rendering canvas.
+segments
+--------
+A collection of entities divided into equal segments
 
-    const currentFrames = frameTable(frameCount);
+    // [Object], Int, Int -> [Map] 
+    const segments = createSegments(layout, rowLength, segmentSize);
 
-    // Canvas -> renderFixed2d
-    const renderFixed2d = createFixed2dRenderer(canvas);
-
-    // Canvas, Int, Int, [String] -> undefined
-    renderFixed2d(frameId, x, y, currentFrames);
-
+    // [Map], Int, Int -> [Object]
+    const sprites = getSegment(segments, col, row); // returns a segment with all sprites it contains
