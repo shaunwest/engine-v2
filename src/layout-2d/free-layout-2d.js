@@ -1,7 +1,5 @@
 import { rectContainsPoint } from 'base-utils/geom';
 
-// TODO: use pooling
-
 const clone = entity => {
   if (Array.isArray(entity)) {
     const result = [];
@@ -25,12 +23,21 @@ const clone = entity => {
 export const initSprite = (sprite, spriteConfig) => 
   Object.assign({}, sprite, clone(spriteConfig));
 
+export const initSprites = (sprites, spriteConfig) => {
+  const newSprites = [];
+  for (const sprite of sprites) {
+    newSprites.push(initSprite(sprite, spriteConfig[sprite.id]));
+  }
+  return newSprites;
+}
+
 export const createFreeLayout2d = (layoutData, spriteSetConfig) => {
+  const sprites = initSprites(layoutData, spriteSetConfig);
   return range2d => {
-    const result = [];
-    for (const entity of layoutData) {
-      if (rectContainsPoint(entity, range2d)) {
-        result.push(initSprite(entity, spriteSetConfig[entity.id]));
+    const result = []; // use pooling
+    for (const sprite of sprites) {
+      if (rectContainsPoint(sprite, range2d)) {
+        result.push(sprite);
       }
     }
     return result;

@@ -22,44 +22,6 @@ const getWebImage = src =>
       onWebImageError
     );
 
-/*
-const onGameImageSuccess = gameImageConfig => 
-  fetchImageFromWeb(gameImageConfig.src)
-    .then(
-      img => {
-        webResourceCache[gameImageConfig.src] = img;
-        gameImageConfig.src = {
-          url: gameImageConfig.src,
-          image: img
-        };
-        return gameImageConfig;
-      },
-      onWebImageError
-    );
-*/
-
-/*
-const onGameImageSetSuccess = gameImageSetConfig =>
-  Promise.all(Object.keys(gameImageSetConfig)
-    .map(configKey => {
-      //onGameImageSuccess(gameImageSetConfig[configKey])
-      const gameImageConfig = gameImageSetConfig[configKey];
-      return getWebImage(gameImageConfig.src)
-        .then(img => {
-          gameImageConfig.src = {
-            url: gameImageConfig.src,
-            image: img
-          };
-          return gameImageConfig;
-        }, error => {});
-    })
-  // no good... how to preserve the object keys??
-  ).then(gameImageSets => gameImageSets.reduce((gameImageSet, gameImageConfigData) => {
-    gameImageSet[gameImageConfigData.id] = gameImageConfigData.config;
-    return gameImageSet;
-  }, {})); 
-*/
-
 const onWebImageError = error =>
   `${ error }: Failed to load source web image`;
 

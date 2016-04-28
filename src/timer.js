@@ -21,6 +21,7 @@ const countdown = (timerState, deltaTime) => {
 export const getInitialTimerState = () =>
   Object.assign({}, {
     fps: 60,
+    fpsDeviation: 1,
     sFrameCount: 0,
     aFrameCount: 0,
     vFrameCount: 0,
@@ -55,14 +56,13 @@ export const createTimer = timerState => {
 
     if (!timerState.paused) {
       for (const cb of timerState.callbacks) {
-        cb(timerState.vFrameCount, timerState.aFrameCount);
+        cb(timerState.vFrameCount, timerState.fpsDeviation, timerState.aFrameCount);
       }
     }
 
-    const fpsDeviation = Math.round(TARGET_FPS / timerState.fps);   
-
+    timerState.fpsDeviation = Math.round(TARGET_FPS / timerState.fps);   
     timerState.aFrameCount++;
-    timerState.vFrameCount += fpsDeviation;
+    timerState.vFrameCount += timerState.fpsDeviation;
     timerState.lastAnimationFrameId = requestAnimationFrame(tick);
     timerState.last = now;
   }

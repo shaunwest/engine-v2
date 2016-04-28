@@ -120,7 +120,7 @@ NOTE: layouts must be mutable for performance reasons
     const fixedLayout2d = createFixedLayout2d(layout, rowLength, tileSetConfig);
 
     // Int, Int -> *
-    const cell = fixedLayout2d(0, 1); // returns value from tileSetConfig that corresponds to row 0, column 1
+    const tile = fixedLayout2d(0, 1); // returns value from tileSetConfig that corresponds to row 0, column 1
 
 range2d
 -------
@@ -171,29 +171,9 @@ spriteLayout2dConfig
       spriteSet: 'foobarSprites'
     }
 
-spriteClassSet
---------------
-TODO: actually, maybe game image set should be entirely decoupled here, so that
-logic and rendering (game image stuff) are not connected...
-
-    const spriteSet = createSpriteSet(spriteSetConfig, gameImageSet);
-    const sprite = spriteSet('mario');
-
-spriteLayout2d
---------------
+freeLayout2d
+-------------
 A collection of sprite instances
-Would this get passed into createSegments?
 
-    const spriteLayout2d = createSpriteLayout2d(layout, spriteSetConfig);
-    const sprite = spriteLayout2d(0);
-    const sprites = spriteLayout2d(viewport);
-
-segments
---------
-A collection of entities divided into equal segments
-
-    // [Object], Int, Int -> [Map] 
-    const segments = createSegments(layout, rowLength, segmentSize);
-
-    // [Map], Int, Int -> [Object]
-    const sprites = getSegment(segments, col, row); // returns a segment with all sprites it contains
+    const freeLayout2d = createFreeLayout2d(layout, spriteSetConfig);
+    const sprites = freeLayout2d(viewport);
