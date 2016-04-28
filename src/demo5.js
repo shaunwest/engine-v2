@@ -117,6 +117,32 @@ const _applyPosition = (sprites, fpsDeviation) => {
   }
 }
 
+const updatePlayer = () => {
+}
+
+const updateView = () => {
+}
+
+const updateSprites = (getSprites, view, fpsDeviation) => {
+  const sprites = getSprites(view.activeRange);
+
+  _applyVelocity(sprites, fpsDeviation);
+  _applyPosition(sprites, fpsDeviation);
+
+  return sprites;
+}
+
+const updateTiles = (getTiles, tileSize, view) => {
+  const tileClipRange = {
+    x: Math.floor(view.clipRange.x / tileSize),
+    y: Math.floor(view.clipRange.y / tileSize),
+    width: Math.floor(view.clipRange.width / tileSize),
+    height: Math.floor(view.clipRange.height / tileSize)
+  };
+  return getTiles(tileClipRange); // to avoid using an object, pass in 4 args
+}
+
+/*
 const createSpriteLayer = (layoutConfig, gameImageSet, view) => {
   const getSprites = createFreeLayout2d(layoutConfig, spriteSetConfig);
   const renderSprites = createSpriteRenderer(render2d, gameImageSet);
@@ -147,14 +173,21 @@ const createTileLayer = (layoutConfig, gameAnimationSet, view) => {
     renderTiles(tiles, view.clipRange, frameCount);
   }
 }
+*/
 
 // ...
 // denote functions with side-effects somehow (underscore?)
 // cannot use anonymous functions in loops
 // functional programming in JS just doesn't really work with games
 
+// 4 steps:
+// Load
+// Create
+// Update
+// Render
 loadGameImageSet('/data/all-game-images.json')
   .then(gameImageSetConfig => {
+    const tileSize = 16;
     const view = {
       activeRange: { x: 0, y: 0, width: 100, height: 100 },
       clipRange: { x: 0, y: 0, width: 64, height: 32 }
@@ -162,21 +195,31 @@ loadGameImageSet('/data/all-game-images.json')
     const gameImageSet = createGameImageSet(gameImageSetConfig);
     const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
     const timer = createTimer(getInitialTimerState());
-    const layers = [
+    const getTiles = createFixedLayout2d(layouts.tiles.data, layouts.tiles.rowLength, tileSetConfig);
+    const getSprites = createFreeLayout2d(layouts.sprites, spriteSetConfig);
+    const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize);
+    const renderSprites = createSpriteRenderer(render2d, gameImageSet);
+    
+    /*const layers = [
       createTileLayer(layouts.tiles, gameAnimationSet, view),
       createSpriteLayer(layouts.sprites, gameImageSet, view)
-    ];
-
-    // method without anonymous func or procedural:
-    // note: do args get garbage collected?
-    // note: seems like more of a pain than it's worth
-    //const foo = (fn, ...args) => fn.apply(null, args);
-    //timer((frameCount, fpsDeviation) => foo(layer, frameCount, fpsDeviation));
+    ];*/
 
     timer((frameCount, fpsDeviation) => {
+      // updates
+      updatePlayer();
+      updateView(view);
+      const tiles = updateTiles(getTiles, tileSize, view);
+      const sprites = updateSprites(getSprites, view, fpsDeviation);
+      
+      // render 
       clear2d();
-      for (const layer of layers) {
+      renderTiles(tiles, view.clipRange, frameCount);
+      const visibleSprites = clip(sprites, view.clipRange);
+      renderSprites(visibleSprites, view.clipRange);
+
+      /*for (const layer of layers) {
         layer(frameCount, fpsDeviation);
-      }
+      }*/
     });
   });

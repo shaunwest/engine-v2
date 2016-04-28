@@ -1,5 +1,15 @@
 LEXICON
 =======
+LCUR ("liquor"): Load -> Create -> Update -> Render
+  or
+L-CUR ("liquor"): Load -> Create/Update/Render
+
+How can various steps be combined to make things easier? But also without making things harder...
+
+gameImage: loadGameImage -> createGameImage -> XXXX -> render
+gameAnimation: loadGameImage -> createGameImage, createGameAnimation -> render
+spriteLayer: loadLayer, loadGameImageSet -> createGameImageSet, createFreeLayout2d -> updateSprites -> renderSprites
+tileLayer: loadLayer, loadGameImageSet -> createGameImageSet, createAnimationSet, createFixedlayout2d -> updateTiles -> renderTiles
 
 gameImage
 ---------
