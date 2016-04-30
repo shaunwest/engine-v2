@@ -1,4 +1,4 @@
-import { getFrameSet } from '../web-image/image-sheet-processor'; 
+import { getFrameSet } from '../web-resource/image-sheet-processor'; 
 
 // jsdom seems to have a problem drawing images to canvas. 
 // When test mode is active, getFrameSet() will not draw frames

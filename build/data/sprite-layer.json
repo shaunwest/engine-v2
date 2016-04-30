@@ -1,0 +1,52 @@
+{
+  "gameImages": {
+    "mario": {
+      "description": "Mario Game Image",
+      "width": 32,
+      "height": 32,
+      "src": "/assets/smb-sprites.png",
+      "frameSet": {
+        "idle": { "x": 96, "y": 0 },
+        "jump": { "x": 0, "y": 0 },
+        "walk": { "xRange": 2, "x": 32, "y": 0 }
+      }
+    }
+  },
+  "spriteLayout": [
+    { "id": "mario", "x": 10, "y": 10 }
+  ],
+  "spriteSet": {
+    "mario": {
+      "description": "mario sprite",
+      "gameImage": "mario",
+      "ai": {
+        "type": "basic" 
+      },
+      "bounds": {
+        "left": 5,
+        "top": 10,
+        "right": 5,
+        "bottom": 0
+      },
+      "physics": {
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "maxVelocity": {
+          "x": 1,
+          "y": 0
+        },
+        "acceleration": {
+          "x": 10,
+          "y": 10
+        },
+        "friction": { 
+          "x": 1,
+          "y": 1
+        }
+      },
+      "currentAnimation": "idle"
+    }
+  } 
+}

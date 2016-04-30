@@ -11,16 +11,16 @@ gameAnimation: loadGameImage -> createGameImage, createGameAnimation -> render
 spriteLayer: loadLayer, loadGameImageSet -> createGameImageSet, createFreeLayout2d -> updateSprites -> renderSprites
 tileLayer: loadLayer, loadGameImageSet -> createGameImageSet, createAnimationSet, createFixedlayout2d -> updateTiles -> renderTiles
 
-gameImage
----------
+imageAsset
+----------
 Returns the raw frame sequences as arrays
 
     // Image, Int, Int, Object -> gameImage
-    const gameImage = createGameImage(tileSheet, width, height, frameSetConfig);
+    const imageAsset = createImageAsset(tileSheet, width, height, frameSetConfig);
 
     // String, Int -> Canvas
-    gameImage('cycle', 0);    // returns first frame in cycle
-    gameImage('default', 1);  // returns second frame in default
+    imageAsset('cycle', 0);    // returns first frame in cycle
+    imageAsset('default', 1);  // returns second frame in default
 
 gameImageSetConfig
 ------------------
@@ -55,6 +55,47 @@ gameImageSet
     // String, String, Int -> gameImage
     const gameImage = gameImageSet('brick');    // returns the 'brick' gameIamge
     const gameImageSetConfig = gameImageSet();  // full gameImageSetConfig
+
+retroAssetConfig
+------------------
+
+    {
+      "description": "my image",
+      "width": 3,
+      "height": 2,
+      "palette": [
+        "#FFFFFF",
+        "#000000"  
+      ],
+      "dataSet": {
+        "frame1": [0, 0, 1, 1, 0, 1],
+        "frame2": [0, 1, 0, 1, 1, 0]
+      },
+      "frameSet": {
+        "default": [ "frame1", "frame2" ]
+      }
+    }
+
+retroAsset
+------------
+
+    // Object, Object, Object, Int, Int -> retroAsset
+    const retroAsset = createRetroAsset(dataSetConfig, paletteConfig, frameSetConfig, width, height);
+
+    // String, Int -> Canvas
+    retroAsset('default', 1);    // returns "frame2" of "default" frame sequence
+
+modelAsset
+----------
+A 3D model
+
+frameSet
+--------
+A collection of frame sequences
+
+frameSequence
+-------------
+An array of related frames
 
 gameAnimation
 -------------

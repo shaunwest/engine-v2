@@ -10,3 +10,5 @@ export const clip = (sprites, clipRange) => {
 
   return newSprites;
 }
+
+

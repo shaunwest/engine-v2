@@ -37,9 +37,9 @@ const spriteSetConfig = {
       "type": "basic" 
     },
     "bounds": {
-      "left": "5",
-      "top": "10",
-      "right": "5",
+      "left": 5,
+      "top": 10,
+      "right": 5,
       "bottom": 0
     },
     "physics": {
@@ -68,11 +68,11 @@ const tileSetConfig = ['brick', 'question'];
 
 const layouts = {
   "sprites": [
-    { id: "mario", x: 10, y: 10 }
+    { "id": "mario", "x": 10, "y": 10 }
   ],
   "tiles": {
-    data: [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-    rowLength: 5
+    "data": [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+    "rowLength": 5
   }
 };
 
@@ -142,49 +142,11 @@ const updateTiles = (getTiles, tileSize, view) => {
   return getTiles(tileClipRange); // to avoid using an object, pass in 4 args
 }
 
-/*
-const createSpriteLayer = (layoutConfig, gameImageSet, view) => {
-  const getSprites = createFreeLayout2d(layoutConfig, spriteSetConfig);
-  const renderSprites = createSpriteRenderer(render2d, gameImageSet);
-
-  return (frameCount, fpsDeviation) => {
-    const sprites = getSprites(view.activeRange);
-    _applyVelocity(sprites, fpsDeviation);
-    _applyPosition(sprites, fpsDeviation);
-
-    const visibleSprites = clip(sprites, view.clipRange);
-    renderSprites(visibleSprites, view.clipRange);
-  }
-}
-
-const createTileLayer = (layoutConfig, gameAnimationSet, view) => {
-  const tileSize = 16;
-  const tileClipRange = {
-    x: Math.floor(view.clipRange.x / tileSize),
-    y: Math.floor(view.clipRange.y / tileSize),
-    width: Math.floor(view.clipRange.width / tileSize),
-    height: Math.floor(view.clipRange.height / tileSize)
-  };
-  const getTiles = createFixedLayout2d(layoutConfig.data, layoutConfig.rowLength, tileSetConfig);
-  const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize);
-
-  return (frameCount, fpsDeviation) => {
-    const tiles = getTiles(tileClipRange);
-    renderTiles(tiles, view.clipRange, frameCount);
-  }
-}
-*/
-
 // ...
 // denote functions with side-effects somehow (underscore?)
 // cannot use anonymous functions in loops
 // functional programming in JS just doesn't really work with games
 
-// 4 steps:
-// Load
-// Create
-// Update
-// Render
 loadGameImageSet('/data/all-game-images.json')
   .then(gameImageSetConfig => {
     const tileSize = 16;
@@ -200,11 +162,6 @@ loadGameImageSet('/data/all-game-images.json')
     const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize);
     const renderSprites = createSpriteRenderer(render2d, gameImageSet);
     
-    /*const layers = [
-      createTileLayer(layouts.tiles, gameAnimationSet, view),
-      createSpriteLayer(layouts.sprites, gameImageSet, view)
-    ];*/
-
     timer((frameCount, fpsDeviation) => {
       // updates
       updatePlayer();
@@ -217,9 +174,5 @@ loadGameImageSet('/data/all-game-images.json')
       renderTiles(tiles, view.clipRange, frameCount);
       const visibleSprites = clip(sprites, view.clipRange);
       renderSprites(visibleSprites, view.clipRange);
-
-      /*for (const layer of layers) {
-        layer(frameCount, fpsDeviation);
-      }*/
     });
   });
