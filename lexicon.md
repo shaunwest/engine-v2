@@ -228,3 +228,5 @@ A collection of sprite instances
 
     const freeLayout2d = createFreeLayout2d(layout, spriteSetConfig);
     const sprites = freeLayout2d(viewport);
+
+

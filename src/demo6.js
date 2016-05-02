@@ -1,15 +1,15 @@
-import { create2dRenderer } from './render';
-import { createSpriteLayer } from './layer/sprite-layer';
 import { getElementById } from './demo-helpers';
+import { getWebResource } from './web-resource/web-resource-loader.js';
+import { initGameObjectSet } from './game-object/game-object.js';
+import { create2dBoxRenderer, createDebugRenderer } from './render.js';
 
-const canvas = getElementById('spriteLayer');
-const render2d = create2dRenderer(canvas);
+getWebResource('/data/colliders.json')
+  .then(collidersConfig => {
+    const canvas = getElementById('collisions');
+    const position = { x: 0, y: 0 };
+    const render2d = create2dBoxRenderer(canvas);
+    const renderDebug = createDebugRenderer(render2d);
+    const colliderSet = initGameObjectSet(collidersConfig.colliderSet, collidersConfig.colliderTypeSet);
 
-// meh...
-createSpriteLayer(
-  '/data/sprite-layer.json',
-  (gameImageSet) => createSpriteRenderer(render2d, gameImageSet),
-  (sprites, fpsDeviation) => {
-
-  }
-);
+    renderDebug(colliderSet, position);
+  });

@@ -1,3 +1,5 @@
+// DELETE THIS
+
 import { onGameImageSetSuccess } from '../game-image/game-image-loader.js';
 import { fetchFromWeb, getWebImage, saveToCache } from '../web-resource/web-resource-loader';
 

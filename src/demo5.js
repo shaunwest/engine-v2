@@ -5,10 +5,9 @@ import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createFixedLayout2d } from './layout-2d/fixed-layout-2d.js';
 import { createTimer, getInitialTimerState } from './timer.js';
 import { create2dClearer, create2dRenderer, createSpriteRenderer, createTileRenderer } from './render';
-import { createFreeLayout2d } from './layout-2d/free-layout-2d.js';
 import { rectContainsPoint } from 'base-utils/geom';
 import { forEach, switchCase, sequence } from './func.js';
-import { clip } from './sprite.js';
+import { slice, sliceTileSet, initGameObjectSet } from './game-object/game-object';
 
 const animationSetConfig = {
   "brick": {
@@ -29,7 +28,7 @@ const animationSetConfig = {
   }
 };
 
-const spriteSetConfig = {
+const spriteTypeSet = {
   "mario": {
     "description": "mario sprite",
     "gameImage": "mario",
@@ -64,8 +63,19 @@ const spriteSetConfig = {
   }
 };
 
-const tileSetConfig = ['brick', 'question'];
+const tileMap = ['brick', 'question'];
 
+const spriteSetConfig = [
+  { "id": "mario", "x": 10, "y": 10 }
+];
+
+const tileSet = {
+  "grid": [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+  "rowLength": 5,
+  "start": { col: 0, row: 0 }
+};
+
+/*
 const layouts = {
   "sprites": [
     { "id": "mario", "x": 10, "y": 10 }
@@ -75,6 +85,7 @@ const layouts = {
     "rowLength": 5
   }
 };
+*/
 
 const canvas = getElementById('fixedAndFree2d');
 const render2d = create2dRenderer(canvas);
@@ -123,15 +134,16 @@ const updatePlayer = () => {
 const updateView = () => {
 }
 
-const updateSprites = (getSprites, view, fpsDeviation) => {
-  const sprites = getSprites(view.activeRange);
+const updateSprites = (spriteSet, view, fpsDeviation) => {
+  const activeSprites = slice(spriteSet, view.activeRange);
 
-  _applyVelocity(sprites, fpsDeviation);
-  _applyPosition(sprites, fpsDeviation);
+  _applyVelocity(activeSprites, fpsDeviation);
+  _applyPosition(activeSprites, fpsDeviation);
 
-  return sprites;
+  return activeSprites;
 }
 
+/*
 const updateTiles = (getTiles, tileSize, view) => {
   const tileClipRange = {
     x: Math.floor(view.clipRange.x / tileSize),
@@ -140,6 +152,17 @@ const updateTiles = (getTiles, tileSize, view) => {
     height: Math.floor(view.clipRange.height / tileSize)
   };
   return getTiles(tileClipRange); // to avoid using an object, pass in 4 args
+}
+*/
+
+const updateTiles = (tileSet, tileSize, view) => {
+  const sliceRegion = {
+    x: Math.floor(view.clipRange.x / tileSize),
+    y: Math.floor(view.clipRange.y / tileSize),
+    width: Math.floor(view.clipRange.width / tileSize),
+    height: Math.floor(view.clipRange.height / tileSize)
+  };
+  return sliceTileSet(tileSet, sliceRegion); // to avoid using an object, pass in 4 args
 }
 
 // ...
@@ -157,22 +180,23 @@ loadGameImageSet('/data/all-game-images.json')
     const gameImageSet = createGameImageSet(gameImageSetConfig);
     const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
     const timer = createTimer(getInitialTimerState());
-    const getTiles = createFixedLayout2d(layouts.tiles.data, layouts.tiles.rowLength, tileSetConfig);
-    const getSprites = createFreeLayout2d(layouts.sprites, spriteSetConfig);
-    const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize);
+    //const getTiles = createFixedLayout2d(layouts.tiles.data, layouts.tiles.rowLength, tileSetConfig);
+    const spriteSet = initGameObjectSet(spriteSetConfig, spriteTypeSet);
+    const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize, tileMap);
     const renderSprites = createSpriteRenderer(render2d, gameImageSet);
     
     timer((frameCount, fpsDeviation) => {
       // updates
       updatePlayer();
       updateView(view);
-      const tiles = updateTiles(getTiles, tileSize, view);
-      const sprites = updateSprites(getSprites, view, fpsDeviation);
+      //const tiles = updateTiles(getTiles, tileSize, view);
+      const visibleTileSet = updateTiles(tileSet, tileSize, view);
+      const activeSprites = updateSprites(spriteSet, view, fpsDeviation);
       
       // render 
       clear2d();
-      renderTiles(tiles, view.clipRange, frameCount);
-      const visibleSprites = clip(sprites, view.clipRange);
+      renderTiles(visibleTileSet, view.clipRange, frameCount);
+      const visibleSprites = slice(activeSprites, view.clipRange);
       renderSprites(visibleSprites, view.clipRange);
     });
   });

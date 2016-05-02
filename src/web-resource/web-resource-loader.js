@@ -10,9 +10,9 @@ export const loadWebResource = (src, handlerFn) =>
     Promise.resolve(webResourceCache[src]) :
     handlerFn(src);
 
-export const fetchImageFromWeb = src => loadWebResource(src, imageLoader);
+const fetchImageFromWeb = src => loadWebResource(src, imageLoader);
 
-export const fetchFromWeb = src => loadWebResource(src, fetch);
+const fetchFromWeb = src => loadWebResource(src, fetch);
 
 export const getWebImage = src =>
   fetchImageFromWeb(src)
@@ -21,5 +21,15 @@ export const getWebImage = src =>
       onWebImageError
     );
 
+export const getWebResource = src =>
+  fetchFromWeb(src)
+    .then(
+      response => saveToCache(src, response.json()),
+      onWebResourceError
+    );
+
 const onWebImageError = error =>
   `${ error }: Failed to load source web image`;
+
+const onWebResourceError = error =>
+  `${ error }: Failed to load web resource`;

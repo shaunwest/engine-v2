@@ -1,5 +1,5 @@
 import { asyncReduce } from '../func';
-import { fetchFromWeb, getWebImage, saveToCache } from '../web-resource/web-resource-loader';
+import { getWebResource, getWebImage } from '../web-resource/web-resource-loader';
 
 const onGameImageError = error =>
   `${ error }: Failed to load Game Image source`;
@@ -26,11 +26,7 @@ export const onGameImageSetSuccess = gameImageSetConfig =>
     {});
 
 export const loadGameImage = src =>
-  fetchFromWeb(src)
-    .then(
-      response => saveToCache(src, response.json()),
-      response => response.text()
-    )
+  getWebResource(src)
     .catch(error => error)
     .then(
       gameImageConfig =>
@@ -47,12 +43,5 @@ export const loadGameImage = src =>
     );
 
 export const loadGameImageSet = src =>
-  fetchFromWeb(src)
-    .then(response => {
-      if (response.ok) {
-        return saveToCache(src, response.json());
-      } else {
-        throw 'Network error';
-      }
-    })
+  getWebResource(src)
     .then(onGameImageSetSuccess, onGameImageSetError);

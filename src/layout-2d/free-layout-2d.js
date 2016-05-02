@@ -1,3 +1,4 @@
+// GET RID OF ALL THIS
 import { rectContainsPoint } from 'base-utils/geom';
 
 const clone = entity => {
@@ -21,16 +22,18 @@ const clone = entity => {
 }
 
 export const initSprite = (sprite, spriteConfig) => 
-  Object.assign({}, sprite, clone(spriteConfig));
+  Object.assign({}, sprite, clone(spriteConfig)); // use pooling
 
 export const initSprites = (sprites, spriteConfig) => {
-  const newSprites = [];
+  const newSprites = []; // use pooling
   for (const sprite of sprites) {
     newSprites.push(initSprite(sprite, spriteConfig[sprite.id]));
   }
   return newSprites;
 }
 
+// FIXME: don't even use this. Just use the init functions
+// and the clip function
 export const createFreeLayout2d = (layoutData, spriteSetConfig) => {
   const sprites = initSprites(layoutData, spriteSetConfig);
   return range2d => {

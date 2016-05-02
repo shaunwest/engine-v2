@@ -1,3 +1,5 @@
+// DELETE ALL OF IT
+
 import { loadSpriteLayer } from './sprite-layer-loader';
 import { createGameImageSet } from '../game-image/game-image';
 import { getInitialTimerState, createTimer } from '../timer';

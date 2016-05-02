@@ -1,12 +1,13 @@
 import { getElementById } from './demo-helpers';
 import { loadGameImageSet } from './game-image/game-image-loader.js';
 import { createGameImageSet } from './game-image/game-image.js';
-import { createFreeLayout2d } from './layout-2d/free-layout-2d.js';
+//import { createFreeLayout2d } from './layout-2d/free-layout-2d.js';
 import { create2dRenderer, createSpriteRenderer } from './render';
 import { sequence } from './func.js';
-import { clip } from './sprite.js';
+import { initGameObjectSet } from './game-object/game-object';
+import { slice } from './game-object/game-object.js';
 
-const spriteSetConfig = {
+const spriteTypeSet = {
   "mario": {
     "description": "mario sprite",
     "gameImage": "mario",
@@ -38,12 +39,13 @@ loadGameImageSet('/data/sprite-game-images.json')
       const activeRange = { x: 0, y: 0, width: 100, height: 100 };
       const clipRange = { x: 0, y: 0, width: 64, height: 64 };
       const gameImageSet = createGameImageSet(gameImageSetConfig);
-      const freeLayout2d = createFreeLayout2d(layoutConfig, spriteSetConfig);
+      //const freeLayout2d = createFreeLayout2d(layoutConfig, spriteSetConfig);
       const renderSprites = createSpriteRenderer(render2d, gameImageSet);
-      const sprites = freeLayout2d(activeRange);
+      //const sprites = freeLayout2d(activeRange);
+      const sprites = initGameObjectSet(layoutConfig, spriteTypeSet)
 
-      clip(sprites, clipRange);
-      renderSprites(sprites, startPosition);
+      const activeSprites = slice(sprites, clipRange);
+      renderSprites(activeSprites, startPosition);
     },
     error => console.log('Error:', error)
   );
