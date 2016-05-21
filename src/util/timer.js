@@ -4,8 +4,9 @@ const MILLISEC_PER_SEC = 1000;
 const ONE_SECOND = 1;
 
 const noop = () => {};
-const requestAnimationFrame = global.requestAnimationFrame || noop;
-const cancelAnimationFrame = global.cancelAnimationFrame || noop;
+// FIXME: check for window vs global
+const requestAnimationFrame = window.requestAnimationFrame || noop;
+const cancelAnimationFrame = window.cancelAnimationFrame || noop;
 const getDeltaTime = (now, lastUpdateTime) => (now - (lastUpdateTime || now)) / MILLISEC_PER_SEC;
 
 const countdown = (timerState, deltaTime) => {

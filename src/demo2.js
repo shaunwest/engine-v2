@@ -2,7 +2,7 @@ import { getElementById, render } from './demo-helpers';
 import { loadGameImageSet } from './game-image/game-image-loader.js';
 import { createGameImageSet } from './game-image/game-image.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
-import { createTimer, getInitialTimerState } from './timer.js';
+import { createTimer, getInitialTimerState } from './util/timer.js';
 
 const animationSetConfig = {
   "brick": {

@@ -2,9 +2,8 @@ import { getElementById, write } from './demo-helpers';
 import { loadGameImageSet } from './game-image/game-image-loader.js';
 import { createGameImageSet } from './game-image/game-image.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
-import { createFixedLayout2d } from './layout-2d/fixed-layout-2d.js';
-import { createTimer, getInitialTimerState } from './timer.js';
-import { create2dRenderer, createTileRenderer } from './render';
+import { createTimer, getInitialTimerState } from './util/timer.js';
+import { create2dRenderer, createTileRenderer } from './util/render';
 
 const animationSetConfig = {
   "brick": {
@@ -33,7 +32,6 @@ const tileSet = {
 };
 const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
-//const tileLayout = createFixedLayout2d([0, 0, 0, 0, 0, 1, 1, 1, 1, 0], 5, tileMap);
 const render2d = create2dRenderer(getElementById('fixed2d'));
 
 loadGameImageSet('/data/tile-game-images.json')
@@ -52,11 +50,7 @@ loadGameImageSet('/data/tile-game-images.json')
       tileClipRange.x = Math.floor(startPosition.x / tileSize);
       tileClipRange.y = Math.floor(startPosition.y / tileSize);
 
-      timer(frameCount => {
-        //const tiles = tileLayout(tileClipRange);
-        //renderTiles(tileSet.grid, startPosition, frameCount);
-        renderTiles(tileSet, startPosition, frameCount);
-      });
+      timer(frameCount => renderTiles(tileSet, startPosition, frameCount));
     },
     error => console.log('Error:', error)
   );

@@ -2,11 +2,10 @@ import { getElementById } from './demo-helpers';
 import { loadGameImageSet } from './game-image/game-image-loader.js';
 import { createGameImageSet } from './game-image/game-image.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
-import { createFixedLayout2d } from './layout-2d/fixed-layout-2d.js';
-import { createTimer, getInitialTimerState } from './timer.js';
-import { create2dClearer, create2dRenderer, createSpriteRenderer, createTileRenderer } from './render';
+import { createTimer, getInitialTimerState } from './util/timer';
+import { create2dClearer, create2dRenderer, createSpriteRenderer, createTileRenderer } from './util/render';
 import { rectContainsPoint } from 'base-utils/geom';
-import { forEach, switchCase, sequence } from './func.js';
+import { forEach, switchCase, sequence } from './util/func.js';
 import { slice, sliceTileSet, initGameObjectSet } from './game-object/game-object';
 
 const animationSetConfig = {
@@ -75,18 +74,6 @@ const tileSet = {
   "start": { col: 0, row: 0 }
 };
 
-/*
-const layouts = {
-  "sprites": [
-    { "id": "mario", "x": 10, "y": 10 }
-  ],
-  "tiles": {
-    "data": [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-    "rowLength": 5
-  }
-};
-*/
-
 const canvas = getElementById('fixedAndFree2d');
 const render2d = create2dRenderer(canvas);
 const clear2d = create2dClearer(canvas);
@@ -143,18 +130,6 @@ const updateSprites = (spriteSet, view, fpsDeviation) => {
   return activeSprites;
 }
 
-/*
-const updateTiles = (getTiles, tileSize, view) => {
-  const tileClipRange = {
-    x: Math.floor(view.clipRange.x / tileSize),
-    y: Math.floor(view.clipRange.y / tileSize),
-    width: Math.floor(view.clipRange.width / tileSize),
-    height: Math.floor(view.clipRange.height / tileSize)
-  };
-  return getTiles(tileClipRange); // to avoid using an object, pass in 4 args
-}
-*/
-
 const updateTiles = (tileSet, tileSize, view) => {
   const sliceRegion = {
     x: Math.floor(view.clipRange.x / tileSize),
@@ -180,7 +155,6 @@ loadGameImageSet('/data/all-game-images.json')
     const gameImageSet = createGameImageSet(gameImageSetConfig);
     const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
     const timer = createTimer(getInitialTimerState());
-    //const getTiles = createFixedLayout2d(layouts.tiles.data, layouts.tiles.rowLength, tileSetConfig);
     const spriteSet = initGameObjectSet(spriteSetConfig, spriteTypeSet);
     const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize, tileMap);
     const renderSprites = createSpriteRenderer(render2d, gameImageSet);
@@ -189,7 +163,6 @@ loadGameImageSet('/data/all-game-images.json')
       // updates
       updatePlayer();
       updateView(view);
-      //const tiles = updateTiles(getTiles, tileSize, view);
       const visibleTileSet = updateTiles(tileSet, tileSize, view);
       const activeSprites = updateSprites(spriteSet, view, fpsDeviation);
       

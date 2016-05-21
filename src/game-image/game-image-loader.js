@@ -1,4 +1,4 @@
-import { asyncReduce } from '../func';
+import { asyncReduce } from '../util/func';
 import { getWebResource, getWebImage } from '../web-resource/web-resource-loader';
 
 const onGameImageError = error =>
@@ -11,7 +11,7 @@ const onGameImageSetError = error => {
 const shallowMerge = (to, from) => Object.assign({}, to, from); 
 const shallowClone = obj => Object.assign({}, obj); 
 
-export const onGameImageSetSuccess = gameImageSetConfig =>
+const onGameImageSetSuccess = gameImageSetConfig =>
   asyncReduce(
     gameImageSetConfig, 
     (newConfig, gameImageConfig, configKey, ready) =>

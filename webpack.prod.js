@@ -1,17 +1,13 @@
 var path = require('path');
 var webpack = require('webpack');
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 module.exports = {
-  debug: true,
-  devtool: '#cheap-module-source-map',
-  entry: [
-    './src/main.js'
-  ],
+  entry: ['./src/index.js'],
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname),
+    filename: 'index.js',
     publicPath: ''
   },
   plugins: [

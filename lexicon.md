@@ -11,19 +11,19 @@ gameAnimation: loadGameImage -> createGameImage, createGameAnimation -> render
 spriteLayer: loadLayer, loadGameImageSet -> createGameImageSet, createFreeLayout2d -> updateSprites -> renderSprites
 tileLayer: loadLayer, loadGameImageSet -> createGameImageSet, createAnimationSet, createFixedlayout2d -> updateTiles -> renderTiles
 
-imageAsset
+sheetAsset
 ----------
 Returns the raw frame sequences as arrays
 
     // Image, Int, Int, Object -> gameImage
-    const imageAsset = createImageAsset(tileSheet, width, height, frameSetConfig);
+    const sheetAsset = createSheetAsset(tileSheet, width, height, frameSetConfig);
 
     // String, Int -> Canvas
-    imageAsset('cycle', 0);    // returns first frame in cycle
-    imageAsset('default', 1);  // returns second frame in default
+    sheetAsset('cycle', 0);    // returns first frame in cycle
+    sheetAsset('default', 1);  // returns second frame in default
 
-gameImageSetConfig
-------------------
+sheetAssetSetConfig
+-------------------
 
     {
       "marioGameImage": {
@@ -47,8 +47,8 @@ gameImageSetConfig
       }
     }
 
-gameImageSet
-------------
+sheetAssetSet
+-------------
 
     const gameImageSet = createGameImageSet(gameImageSetConfig);
 
@@ -57,7 +57,7 @@ gameImageSet
     const gameImageSetConfig = gameImageSet();  // full gameImageSetConfig
 
 retroAssetConfig
-------------------
+----------------
 
     {
       "description": "my image",

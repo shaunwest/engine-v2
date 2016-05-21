@@ -2,8 +2,8 @@ import { getElementById } from './demo-helpers';
 import { loadGameImageSet } from './game-image/game-image-loader.js';
 import { createGameImageSet } from './game-image/game-image.js';
 //import { createFreeLayout2d } from './layout-2d/free-layout-2d.js';
-import { create2dRenderer, createSpriteRenderer } from './render';
-import { sequence } from './func.js';
+import { create2dRenderer, createSpriteRenderer } from './util/render';
+import { sequence } from './util/func';
 import { initGameObjectSet } from './game-object/game-object';
 import { slice } from './game-object/game-object.js';
 

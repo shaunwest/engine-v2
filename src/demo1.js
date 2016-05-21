@@ -1,5 +1,5 @@
 import { getElementById, render } from './demo-helpers';
-import { createTimer, getInitialTimerState } from './timer.js';
+import { createTimer, getInitialTimerState } from './util/timer.js';
 import { loadGameImage } from './game-image/game-image-loader';
 import { createGameImageFromConfig } from './game-image/game-image';
 import { createWaitCycleAnimation } from './animation/wait-cycle-animation';

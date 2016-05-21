@@ -20,26 +20,6 @@ export const deepClone = entity => {
   }
 }
 
-/*
-export const sliceGrid = (tileGrid, rowLength, sliceRegion) => {
-  const tiles = []; // TODO: pooling
-  const maxCol = sliceRegion.x + sliceRegion.width;
-  const maxRow = sliceRegion.y + sliceRegion.height;
-
-  for (let col = sliceRegion.x; col < maxCol; col++) {
-    for (let row = sliceRegion.y; row < maxRow; row++) {
-      tiles.push({ // TODO: pooling
-        tileId: tileGrid[(row * rowLength) + col],
-        col,
-        row
-      });
-    }
-  }
-
-  return tiles;
-}
-*/
-
 export const sliceTileSet = (tileSet, sliceRegion) => {
   const grid = [];
 

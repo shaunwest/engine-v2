@@ -12,8 +12,17 @@ export const create2dRenderer = canvas => {
 
 export const create2dBoxRenderer = canvas => {
   const context = canvas.getContext('2d');
-  return (x, y, width, height) => {
-    context.rect(x, y, width, height);
+  return box => {
+    context.rect(box.x, box.y, box.width, box.height);
+    context.stroke();
+  }
+}
+
+export const create2dLineRenderer = canvas => {
+  const context = canvas.getContext('2d');
+  return line => {
+    context.moveTo(line.x1, line.y1);
+    context.lineTo(line.x2, line.y2);
     context.stroke();
   }
 }
@@ -25,17 +34,12 @@ export const create2dClearer = canvas => {
   }
 }
 
-/*
-export const createTileRenderer = (render2d, gameAnimationSet, tileSize, tileMap) =>
-  (tiles, position, frameCount) => {
-    for (const tile of tiles) {
-      render2d(
-        gameAnimationSet(tileMap[tile.tileId], frameCount),
-        (tile.col * tileSize) - position.x,
-        (tile.row * tileSize) - position.y);
+export const createObjectRenderer = renderers =>
+  (gameObjectSet, position) => {
+    for(const gameObject of gameObjectSet) {
+      renderers[gameObject.type](gameObject);
     }
   }
-*/
 
 export const createDebugRenderer = (render2d) =>
   (gameObjectSet, position) => {

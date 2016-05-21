@@ -1,5 +1,5 @@
 {
-  "colliderTypeSet": [{ "type": "solid" }, { "type": "platform" }],
+  "colliderTypeSet": [{ "shape": "rect", "type": "solid" }, { "shape": "rect", "type": "platform" }],
   "colliderSet": [
       { "id": 0, "x": 10, "y": 10, "width": 50, "height": 30 },
       { "id": 1, "x": 50, "y": 20, "width": 40, "height": 40 }
