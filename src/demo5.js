@@ -1,17 +1,17 @@
 import { getElementById } from './demo-helpers';
-import { loadGameImageSet } from './game-image/game-image-loader.js';
-import { createGameImageSet } from './game-image/game-image.js';
+import { loadSheetAssetSetConfig } from './sheet-asset/sheet-asset-loader.js';
+import { createSheetAssetSet } from './sheet-asset/sheet-asset.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createTimer, getInitialTimerState } from './util/timer';
 import { create2dClearer, create2dRenderer, createSpriteRenderer, createTileRenderer } from './util/render';
 import { rectContainsPoint } from 'base-utils/geom';
 import { forEach, switchCase, sequence } from './util/func.js';
-import { slice, sliceTileSet, initGameObjectSet } from './game-object/game-object';
+import { slice, sliceTileSet, createGameObjectSet } from './game-object/game-object';
 
 const animationSetConfig = {
   "brick": {
     "description": "brick animation",
-    "gameImage": "brick",
+    "sheetAsset": "brick",
     "type": "waitThenCycle",
     "frameSet": {
       "cycle": { "fps": 8, "every": 60 }
@@ -19,7 +19,7 @@ const animationSetConfig = {
   },
   "question": {
     "description": "question animation",
-    "gameImage": "question",
+    "sheetAsset": "question",
     "type": "basic",
     "frameSet": {
       "default": { "fps": 8 }
@@ -30,7 +30,7 @@ const animationSetConfig = {
 const spriteTypeSet = {
   "mario": {
     "description": "mario sprite",
-    "gameImage": "mario",
+    "sheetAsset": "mario",
     "ai": {
       "type": "basic" 
     },
@@ -65,7 +65,7 @@ const spriteTypeSet = {
 const tileMap = ['brick', 'question'];
 
 const spriteSetConfig = [
-  { "id": "mario", "x": 10, "y": 10 }
+  { "type": "mario", "x": 10, "y": 10 }
 ];
 
 const tileSet = {
@@ -145,19 +145,19 @@ const updateTiles = (tileSet, tileSize, view) => {
 // cannot use anonymous functions in loops
 // functional programming in JS just doesn't really work with games
 
-loadGameImageSet('/data/all-game-images.json')
-  .then(gameImageSetConfig => {
+loadSheetAssetSetConfig('/data/all-sheet-assets.json')
+  .then(sheetAssetSetConfig => {
     const tileSize = 16;
     const view = {
       activeRange: { x: 0, y: 0, width: 100, height: 100 },
       clipRange: { x: 0, y: 0, width: 64, height: 32 }
     };
-    const gameImageSet = createGameImageSet(gameImageSetConfig);
-    const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
+    const sheetAssetSet = createSheetAssetSet(sheetAssetSetConfig);
+    const gameAnimationSet = createGameAnimationSet(animationSetConfig, sheetAssetSet);
     const timer = createTimer(getInitialTimerState());
-    const spriteSet = initGameObjectSet(spriteSetConfig, spriteTypeSet);
+    const spriteSet = createGameObjectSet(spriteSetConfig, spriteTypeSet);
     const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize, tileMap);
-    const renderSprites = createSpriteRenderer(render2d, gameImageSet);
+    const renderSprites = createSpriteRenderer(render2d, sheetAssetSet);
     
     timer((frameCount, fpsDeviation) => {
       // updates

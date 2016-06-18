@@ -8,7 +8,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname),
     filename: 'index.js',
-    publicPath: ''
+    libraryTarget: 'commonjs'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),

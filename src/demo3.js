@@ -1,6 +1,6 @@
 import { getElementById, write } from './demo-helpers';
-import { loadGameImageSet } from './game-image/game-image-loader.js';
-import { createGameImageSet } from './game-image/game-image.js';
+import { loadSheetAssetSetConfig } from './sheet-asset/sheet-asset-loader.js';
+import { createSheetAssetSet } from './sheet-asset/sheet-asset.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createTimer, getInitialTimerState } from './util/timer.js';
 import { create2dRenderer, createTileRenderer } from './util/render';
@@ -8,7 +8,7 @@ import { create2dRenderer, createTileRenderer } from './util/render';
 const animationSetConfig = {
   "brick": {
     "description": "brick animation",
-    "gameImage": "brick",
+    "sheetAsset": "brick",
     "type": "waitThenCycle",
     "frameSet": {
       "cycle": { "fps": 8, "every": 60 }
@@ -16,7 +16,7 @@ const animationSetConfig = {
   },
   "question": {
     "description": "question animation",
-    "gameImage": "question",
+    "sheetAsset": "question",
     "type": "basic",
     "frameSet": {
       "default": { "fps": 8 }
@@ -34,14 +34,14 @@ const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
 const render2d = create2dRenderer(getElementById('fixed2d'));
 
-loadGameImageSet('/data/tile-game-images.json')
+loadSheetAssetSetConfig('/data/tile-sheet-assets.json')
   .then(
-    gameImageSetConfig => {
+    sheetAssetSetConfig => {
       const tileSize = 16;
       const startPosition = { x: 0, y: 0 };
       const tileClipRange = { x: 0, y: 0, width: 4, height: 2 };
-      const gameImageSet = createGameImageSet(gameImageSetConfig);
-      const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
+      const sheetAssetSet = createSheetAssetSet(sheetAssetSetConfig);
+      const gameAnimationSet = createGameAnimationSet(animationSetConfig, sheetAssetSet);
       const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize, tileMap);
 
       timer(() =>

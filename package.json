@@ -2,8 +2,9 @@
   "name": "engine-v2",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.js --inline --content-base build/",
+    "start": "webpack-dev-server --config webpack.config.js --inline --content-base build/ --port 8081",
     "build": "webpack --config webpack.prod.js"
   },
   "author": "Shaun West",

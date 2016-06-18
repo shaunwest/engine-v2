@@ -1,24 +1,5 @@
-import { rectContainsPoint } from 'base-utils/geom';
-
-export const deepClone = entity => {
-  if (Array.isArray(entity)) {
-    const result = [];
-    for (let i = 0; i < result.length; i++) {
-      result[i] = deepClone(entity[i]);
-    }
-    return result;
-  } else if (typeof entity == 'object') {
-    const result = {};
-    for (const key in entity) {
-      if (entity.hasOwnProperty(key)) {
-        result[key] = deepClone(entity[key]); 
-      }
-    }
-    return result;
-  } else {
-    return entity;
-  }
-}
+import { rectContainsPoint } from '../util/geom';
+import { deepClone } from '../util/obj';
 
 export const sliceTileSet = (tileSet, sliceRegion) => {
   const grid = [];
@@ -52,13 +33,13 @@ export const slice = (gameObjects, sliceRegion) => {
   return slicedGameObjects;
 }
 
-export const initGameObject = (gameObjectConfig, gameObjectType) => 
+export const createGameObject = (gameObjectConfig, gameObjectType) => 
   Object.assign({}, gameObjectConfig, deepClone(gameObjectType)); // use pooling
 
-export const initGameObjectSet = (gameObjectSetConfig, gameObjectTypeSet) => {
+export const createGameObjectSet = (gameObjectSetConfig, gameObjectTypeSet) => {
   const gameObjectSet = []; // use pooling
   for (const gameObjectConfig of gameObjectSetConfig) {
-    gameObjectSet.push(initGameObject(gameObjectConfig, gameObjectTypeSet[gameObjectConfig.id]));
+    gameObjectSet.push(createGameObject(gameObjectConfig, gameObjectTypeSet[gameObjectConfig.type]));
   }
   return gameObjectSet;
 }

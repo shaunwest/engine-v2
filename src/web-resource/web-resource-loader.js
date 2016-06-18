@@ -21,6 +21,7 @@ export const getWebImage = src =>
       onWebImageError
     );
 
+// Rename to getJson
 export const getWebResource = src =>
   fetchFromWeb(src)
     .then(

@@ -57,6 +57,9 @@ export const createTileRenderer = (render2d, gameAnimationSet, tileSize, tileMap
   (tileSet, position, frameCount) => {
     for (let i = 0; i < tileSet.grid.length; i++) {
       const tileId = tileSet.grid[i];
+      if (tileId === null) {
+        continue;
+      }
       const col = tileSet.start.col + Math.floor(i % tileSet.rowLength);
       const row = tileSet.start.row + Math.floor(i / tileSet.rowLength);
       
@@ -68,11 +71,14 @@ export const createTileRenderer = (render2d, gameAnimationSet, tileSize, tileMap
   }
 
 
-export const createSpriteRenderer = (render2d, gameImageSet) =>
+export const createSpriteRenderer = (render2d, sheetAssetSet) =>
   (sprites, position) => {
     for(const sprite of sprites) {
+      if (sprite === null) {
+        continue;
+      }
       render2d(
-        gameImageSet(sprite.id)(sprite.currentAnimation, 0),
+        sheetAssetSet(sprite.sheetAsset)(sprite.currentAnimation, 0),
         sprite.x - position.x,
         sprite.y - position.y
       );

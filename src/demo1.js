@@ -1,7 +1,7 @@
 import { getElementById, render } from './demo-helpers';
 import { createTimer, getInitialTimerState } from './util/timer.js';
-import { loadGameImage } from './game-image/game-image-loader';
-import { createGameImageFromConfig } from './game-image/game-image';
+import { loadSheetAssetConfig } from './sheet-asset/sheet-asset-loader';
+import { createSheetAssetFromConfig } from './sheet-asset/sheet-asset';
 import { createWaitCycleAnimation } from './animation/wait-cycle-animation';
 import { createBasicAnimation } from './animation/basic-animation';
 
@@ -10,17 +10,15 @@ import { createBasicAnimation } from './animation/basic-animation';
 const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
 
-loadGameImage('/data/mario-game-image.json')
-  .then(gameImageConfig => createGameImageFromConfig(gameImageConfig))
-  .then(gameImage =>
-    getElementById('marioGameImage').appendChild(gameImage('idle', 0))
-  ); 
+loadSheetAssetConfig('/data/mario-sheet-asset.json')
+  .then(sheetAssetConfig => createSheetAssetFromConfig(sheetAssetConfig))
+  .then(sheetAsset => getElementById('marioSheetAsset').appendChild(sheetAsset('idle', 0))); 
 
-loadGameImage('/data/question-game-image.json')
-  .then(gameImageConfig => createGameImageFromConfig(gameImageConfig))
-  .then(gameImage => {
+loadSheetAssetConfig('/data/question-sheet-asset.json')
+  .then(sheetAssetConfig => createSheetAssetFromConfig(sheetAssetConfig))
+  .then(sheetAsset => {
     const basicAnimation = createBasicAnimation(
-      gameImage,
+      sheetAsset,
       8, 
       60
     );
@@ -31,18 +29,18 @@ loadGameImage('/data/question-game-image.json')
 
 const brickAnimationConfig = {
   "description": "brick animation",
-  "gameImage": "brickGameImage",
+  "sheetAsset": "brickSheetAsset",
   "type": "waitThenCycle",
   "frameSet": {
     "cycle": { "fps": 8, "every": 60 }
   }
 };
 
-loadGameImage('/data/brick-game-image.json')
-  .then(gameImageConfig => createGameImageFromConfig(gameImageConfig))
-  .then(gameImage => {
+loadSheetAssetConfig('/data/brick-sheet-asset.json')
+  .then(sheetAssetConfig => createSheetAssetFromConfig(sheetAssetConfig))
+  .then(sheetAsset => {
     const cycleAnimation = createWaitCycleAnimation(
-      gameImage,
+      sheetAsset,
       brickAnimationConfig.frameSet.cycle.fps, 
       brickAnimationConfig.frameSet.cycle.every,
       60

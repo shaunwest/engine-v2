@@ -19,6 +19,7 @@ const countdown = (timerState, deltaTime) => {
   }
 }
 
+// TODO: pass in object and merge
 export const getInitialTimerState = () =>
   Object.assign({}, {
     fps: 60,
@@ -57,7 +58,9 @@ export const createTimer = timerState => {
 
     if (!timerState.paused) {
       for (const cb of timerState.callbacks) {
-        cb(timerState.vFrameCount, timerState.fpsDeviation, timerState.aFrameCount);
+        if (cb(timerState.vFrameCount, timerState.fpsDeviation, timerState.aFrameCount)) {
+          return;
+        }
       }
     }
 

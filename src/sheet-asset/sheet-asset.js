@@ -34,14 +34,14 @@ const saveFrameSet = (imageSheet, width, height, frameSetConfig) =>
 
 // Object, String, Int -> Canvas | [Canvas]
 const getFrame = (frameSet, frameSetId, frameIndex) => {
-  if (!frameSet[frameSetId]) throw `The provided frame set id '${ frameSetId }' was not found in this frame set`;
+  //if (!frameSet[frameSetId]) throw `The provided frame set id '${ frameSetId }' was not found in this frame set`;
   return (typeof frameIndex !== 'undefined') ?
     frameSet[frameSetId][frameIndex] :
     frameSet[frameSetId];
 }
 
 // Image, Int, Int, {frameSetConfig} -> String, Int -> Canvas
-export const createGameImage = (imageSheet, width, height, frameSetConfig) => {
+export const createSheetAsset = (imageSheet, width, height, frameSetConfig) => {
   const frameSet = Object.keys(frameSetConfig)
     .reduce(saveFrameSet(imageSheet, width, height, frameSetConfig), {});
 
@@ -49,28 +49,28 @@ export const createGameImage = (imageSheet, width, height, frameSetConfig) => {
     getFrame(frameSet, frameSetId, frameIndex);
 }
 
-// Object -> gameImage()
-export const createGameImageFromConfig = gameImageConfig =>
-  createGameImage(
-    gameImageConfig.src.image,
-    gameImageConfig.width,
-    gameImageConfig.height,
-    gameImageConfig.frameSet
+// Object -> sheetAsset()
+export const createSheetAssetFromConfig = sheetAssetConfig =>
+  createSheetAsset(
+    sheetAssetConfig.src.image,
+    sheetAssetConfig.width,
+    sheetAssetConfig.height,
+    sheetAssetConfig.frameSet
   );
 
-// Object -> String | undefined -> gameImage() | {gameImage()}
-export const createGameImageSet = gameImageSetConfig => {
-  const gameImageSet = Object.keys(gameImageSetConfig).reduce((gameImageSet, configId) => {
-    gameImageSet[configId] = createGameImageFromConfig(gameImageSetConfig[configId]);
-    return gameImageSet;
+// Object -> String | undefined -> sheetAsset() | {sheetAsset()}
+export const createSheetAssetSet = sheetAssetSetConfig => {
+  const sheetAssetSet = Object.keys(sheetAssetSetConfig).reduce((sheetAssetSet, configId) => {
+    sheetAssetSet[configId] = createSheetAssetFromConfig(sheetAssetSetConfig[configId]);
+    return sheetAssetSet;
   }, {});
 
-  return (gameImageId) => {
-    if (typeof gameImageId === 'undefined')
-      return gameImageSet;
-    else if (gameImageSet[gameImageId])
-      return gameImageSet[gameImageId];
+  return (sheetAssetId) => {
+    if (typeof sheetAssetId === 'undefined')
+      return sheetAssetSet;
+    else if (sheetAssetSet[sheetAssetId])
+      return sheetAssetSet[sheetAssetId];
     else
-      throw `The provided game image id '${ gameImageId }' was not found in this game image set`;
+      throw `The provided game image id '${ sheetAssetId }' was not found in this game image set`;
   }
 }

@@ -1,7 +1,3 @@
-/**
- * Created by shaunwest on 9/11/15.
- */
-
 const IMAGE_WAIT_INTERVAL = 100;
 
 export const createImage = uri => {

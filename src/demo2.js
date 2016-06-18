@@ -1,13 +1,13 @@
 import { getElementById, render } from './demo-helpers';
-import { loadGameImageSet } from './game-image/game-image-loader.js';
-import { createGameImageSet } from './game-image/game-image.js';
+import { loadSheetAssetSetConfig } from './sheet-asset/sheet-asset-loader.js';
+import { createSheetAssetSet } from './sheet-asset/sheet-asset.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createTimer, getInitialTimerState } from './util/timer.js';
 
 const animationSetConfig = {
   "brick": {
     "description": "brick animation",
-    "gameImage": "brick",
+    "sheetAsset": "brick",
     "type": "waitThenCycle",
     "frameSet": {
       "cycle": { "fps": 8, "every": 60 }
@@ -15,7 +15,7 @@ const animationSetConfig = {
   },
   "question": {
     "description": "question animation",
-    "gameImage": "question",
+    "sheetAsset": "question",
     "type": "basic",
     "frameSet": {
       "default": { "fps": 8 }
@@ -26,15 +26,15 @@ const animationSetConfig = {
 const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
 
-loadGameImageSet('/data/tile-game-images.json')
+loadSheetAssetSetConfig('/data/tile-sheet-assets.json')
   .then(
-    gameImageSetConfig => {
-      const gameImageSet = createGameImageSet(gameImageSetConfig);
+    sheetAssetSetConfig => {
+      const sheetAssetSet = createSheetAssetSet(sheetAssetSetConfig);
 
-      render(getElementById('brick'), gameImageSet('brick')('default', 0));
-      render(getElementById('question'), gameImageSet('question')('default', 0));
+      render(getElementById('brick'), sheetAssetSet('brick')('default', 0));
+      render(getElementById('question'), sheetAssetSet('question')('default', 0));
 
-      const gameAnimationSet = createGameAnimationSet(animationSetConfig, gameImageSet);
+      const gameAnimationSet = createGameAnimationSet(animationSetConfig, sheetAssetSet);
 
       timer(frameCount =>
         render(getElementById('questionAnimation2'), gameAnimationSet('question', frameCount)));
