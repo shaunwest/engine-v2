@@ -1,39 +1,25 @@
 import { clone } from './util/obj.js';
 import { map } from './util/func.js';
-import { prop, Action, loop, Msg } from './util/model.js';
+import { prop, Action, loop } from './util/model.js';
+import { update as counterUpdate } from './counter';
+import { update as moverUpdate } from './mover';
 
 const model = {
-  foo: 'xxx',
-  list: [
+  counter: 0,
+  sprites: [
     { x: 0, y: 1 },
     { x: 2, y: 5 }
   ]
 };
 
-// TODO reverse this
-const fooAction = Action(Msg('doFoo', 'doBar'), model);
+const counterAction = Action('counter', 'increment', model);
 
 const update = (msg, model) => {
-  switch (msg.pop()) {
-    case 'doFoo':
-      const update2Action = update2(msg, model);
-      return Action(update2Action.msg, prop(model, 'foo', update2Action.model));
-    case 'doList':
-      return Action(Msg('show'), prop(model, 'list', map(doList, model.list)));
-    case 'show':
-      return Action(Msg('done'), model);
-    default:
-      return null;
-  }
-}
-
-
-const update2 = (msg, model) => {
-  switch (msg.pop()) {
-    case 'doBar':
-      return Action(Msg('doList'), 'bar');
-    case 'doBaz':
-      return Action(Msg('doList'), prop(model, 'foo', 'baz'));
+  switch (msg.value) {
+    case 'counter':
+      return Action('mover', 'right', prop(model, 'counter', counterUpdate(msg.next, model.counter)));
+    case 'mover':
+      return Action('done', prop(model, 'sprites', moverUpdate(msg.next, model.sprites)));
     default:
       return null;
   }
@@ -47,7 +33,7 @@ const doList = value => {
 }
 
 loop((action, frameCount) => {
-  console.log(action.model.foo, action.model.list[0]);
+  //console.log(action.model.counter, action.model.sprites[0].x);
   const newAction = update(action.msg, action.model);
   return newAction;
-}, fooAction);
+}, counterAction);

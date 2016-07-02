@@ -49,19 +49,43 @@ export const createSheetAsset = (imageSheet, width, height, frameSetConfig) => {
     getFrame(frameSet, frameSetId, frameIndex);
 }
 
+// Image, Int, Int, {frames} -> String, Int -> Canvas
+export const createSimpleSheetAsset = (imageSheet, width, height, framesConfig) => {
+  const frameSet = save({}, 'default', () =>
+    getFrameSet(
+      imageSheet,
+      framesConfig.x,
+      framesConfig.y,
+      width,
+      height,
+      framesConfig.xRange,
+      testMode
+    ));
+
+  return (frameSetId, frameIndex) =>
+    getFrame(frameSet, frameSetId, frameIndex);
+}
+
 // Object -> sheetAsset()
-export const createSheetAssetFromConfig = sheetAssetConfig =>
-  createSheetAsset(
-    sheetAssetConfig.src.image,
-    sheetAssetConfig.width,
-    sheetAssetConfig.height,
-    sheetAssetConfig.frameSet
-  );
+export const createSheetAssetFromConfig = (sheetAssetConfig, defaults = {}) =>
+  sheetAssetConfig.frameSet ?
+    createSheetAsset(
+      sheetAssetConfig.src.image,
+      sheetAssetConfig.width || defaults.width,
+      sheetAssetConfig.height || defaults.height,
+      sheetAssetConfig.frameSet
+    ) :
+    createSimpleSheetAsset(
+      sheetAssetConfig.src.image,
+      sheetAssetConfig.width || defaults.width,
+      sheetAssetConfig.height || defaults.height,
+      sheetAssetConfig.frames
+    );
 
 // Object -> String | undefined -> sheetAsset() | {sheetAsset()}
-export const createSheetAssetSet = sheetAssetSetConfig => {
+export const createSheetAssetSet = (sheetAssetSetConfig, defaults = {})  => {
   const sheetAssetSet = Object.keys(sheetAssetSetConfig).reduce((sheetAssetSet, configId) => {
-    sheetAssetSet[configId] = createSheetAssetFromConfig(sheetAssetSetConfig[configId]);
+    sheetAssetSet[configId] = createSheetAssetFromConfig(sheetAssetSetConfig[configId], defaults);
     return sheetAssetSet;
   }, {});
 

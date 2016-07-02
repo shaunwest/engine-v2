@@ -14,8 +14,6 @@
     "src": "/assets/smb-tiles.png",
     "width": 16,
     "height": 16,
-    "frameSet": {
-      "default": { "xRange": 4, "x": 0, "y": 16 }
-    }
+    "frames": { "xRange": 4, "x": 0, "y": 16 }
   } 
 }

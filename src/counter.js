@@ -1,6 +1,6 @@
 
 export const update = (msg, model) => {
-  switch(msg.pop()) {
+  switch(msg.value) {
     case 'increment':
       return model + 1;
     case 'decrement':
