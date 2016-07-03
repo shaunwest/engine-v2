@@ -1,6 +1,6 @@
 import { getElementById } from './demo-helpers';
-import { loadSheetAssetSetConfig } from './sheet-asset/sheet-asset-loader.js';
-import { createSheetAssetSet } from './sheet-asset/sheet-asset.js';
+import { loadImshaSetConfig } from './imsha/imsha-loader.js';
+import { createImshaSet } from './imsha/imsha.js';
 //import { createFreeLayout2d } from './layout-2d/free-layout-2d.js';
 import { create2dRenderer, createSpriteRenderer } from './util/render';
 import { sequence } from './util/func';
@@ -10,7 +10,7 @@ import { slice } from './game-object/game-object.js';
 const spriteTypeSet = {
   "mario": {
     "description": "mario sprite",
-    "sheetAsset": "mario",
+    "imsha": "mario",
     "ai": {
       "type": "basic" 
     },
@@ -32,15 +32,15 @@ const layoutConfig = [{ type: "mario", x: 10, y: 10}, { type: "mario", x: 50, y:
 
 const render2d = create2dRenderer(getElementById('free2d'));
 
-loadSheetAssetSetConfig('/data/sprite-sheet-assets.json')
+loadImshaSetConfig('/data/sprite-imshas.json')
   .then(
-    sheetAssetSetConfig => {
+    imshaSetConfig => {
       const startPosition = { x: 10, y: 0 };
       const activeRange = { x: 0, y: 0, width: 100, height: 100 };
       const clipRange = { x: 0, y: 0, width: 64, height: 64 };
-      const sheetAssetSet = createSheetAssetSet(sheetAssetSetConfig);
+      const imshaSet = createImshaSet(imshaSetConfig);
       //const freeLayout2d = createFreeLayout2d(layoutConfig, spriteSetConfig);
-      const renderSprites = createSpriteRenderer(render2d, sheetAssetSet);
+      const renderSprites = createSpriteRenderer(render2d, imshaSet);
       //const sprites = freeLayout2d(activeRange);
       const sprites = createGameObjectSet(layoutConfig, spriteTypeSet);
       console.log(sprites);

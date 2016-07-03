@@ -1,13 +1,13 @@
 import { getElementById, render } from './demo-helpers';
-import { loadSheetAssetSetConfig } from './sheet-asset/sheet-asset-loader.js';
-import { createSheetAssetSet } from './sheet-asset/sheet-asset.js';
+import { loadImshaSetConfig } from './imsha/imsha-loader.js';
+import { createImshaSet } from './imsha/imsha.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createTimer, getInitialTimerState } from './util/timer.js';
 
 const animationSetConfig = {
   "brick": {
     "description": "brick animation",
-    "sheetAsset": "brick",
+    "imsha": "brick",
     "type": "waitThenCycle",
     "frameSet": {
       "cycle": { "fps": 8, "every": 60 }
@@ -15,7 +15,7 @@ const animationSetConfig = {
   },
   "question": {
     "description": "question animation",
-    "sheetAsset": "question",
+    "imsha": "question",
     "type": "basic",
     "frameSet": {
       "default": { "fps": 8 }
@@ -26,15 +26,15 @@ const animationSetConfig = {
 const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
 
-loadSheetAssetSetConfig('/data/tile-sheet-assets.json')
+loadImshaSetConfig('/data/tile-imshas.json')
   .then(
-    sheetAssetSetConfig => {
-      const sheetAssetSet = createSheetAssetSet(sheetAssetSetConfig);
+    imshaSetConfig => {
+      const imshaSet = createImshaSet(imshaSetConfig);
 
-      render(getElementById('brick'), sheetAssetSet('brick')('default', 0));
-      render(getElementById('question'), sheetAssetSet('question')('default', 0));
+      render(getElementById('brick'), imshaSet('brick')('default', 0));
+      render(getElementById('question'), imshaSet('question')('default', 0));
 
-      const gameAnimationSet = createGameAnimationSet(animationSetConfig, sheetAssetSet);
+      const gameAnimationSet = createGameAnimationSet(animationSetConfig, imshaSet);
 
       timer(frameCount =>
         render(getElementById('questionAnimation2'), gameAnimationSet('question', frameCount)));

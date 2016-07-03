@@ -11,19 +11,18 @@ gameAnimation: loadGameImage -> createGameImage, createGameAnimation -> render
 spriteLayer: loadLayer, loadGameImageSet -> createGameImageSet, createFreeLayout2d -> updateSprites -> renderSprites
 tileLayer: loadLayer, loadGameImageSet -> createGameImageSet, createAnimationSet, createFixedlayout2d -> updateTiles -> renderTiles
 
-sheetAsset
-----------
-Returns the raw frame sequences as arrays
+Imsha (Image Sheet Asset)
+-------------------------
 
     // Image, Int, Int, Object -> gameImage
-    const sheetAsset = createSheetAsset(tileSheet, width, height, frameSetConfig);
+    const myImsha = createImsha(tileSheet, width, height, frameSetConfig);
 
     // String, Int -> Canvas
-    sheetAsset('cycle', 0);    // returns first frame in cycle
-    sheetAsset('default', 1);  // returns second frame in default
+    myImsha('cycle', 0);    // returns first frame in cycle
+    myImsha('default', 1);  // returns second frame in default
 
-sheetAssetSetConfig
--------------------
+imshaSetConfig
+--------------
 
     {
       "marioGameImage": {
@@ -47,8 +46,8 @@ sheetAssetSetConfig
       }
     }
 
-sheetAssetSet
--------------
+imshaSet
+--------
 
     const gameImageSet = createGameImageSet(gameImageSetConfig);
 
@@ -77,7 +76,7 @@ retroAssetConfig
     }
 
 retroAsset
-------------
+----------
 
     // Object, Object, Object, Int, Int -> retroAsset
     const retroAsset = createRetroAsset(dataSetConfig, paletteConfig, frameSetConfig, width, height);
@@ -95,7 +94,7 @@ A collection of frame sequences
 
 frameSequence
 -------------
-An array of related frames
+An array of frames in sequential order
 
 gameAnimation
 -------------

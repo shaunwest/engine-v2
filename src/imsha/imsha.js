@@ -41,7 +41,7 @@ const getFrame = (frameSet, frameSetId, frameIndex) => {
 }
 
 // Image, Int, Int, {frameSetConfig} -> String, Int -> Canvas
-export const createSheetAsset = (imageSheet, width, height, frameSetConfig) => {
+export const createImsha = (imageSheet, width, height, frameSetConfig) => {
   const frameSet = Object.keys(frameSetConfig)
     .reduce(saveFrameSet(imageSheet, width, height, frameSetConfig), {});
 
@@ -50,7 +50,7 @@ export const createSheetAsset = (imageSheet, width, height, frameSetConfig) => {
 }
 
 // Image, Int, Int, {frames} -> String, Int -> Canvas
-export const createSimpleSheetAsset = (imageSheet, width, height, framesConfig) => {
+export const createSimpleImsha = (imageSheet, width, height, framesConfig) => {
   const frameSet = save({}, 'default', () =>
     getFrameSet(
       imageSheet,
@@ -66,35 +66,35 @@ export const createSimpleSheetAsset = (imageSheet, width, height, framesConfig) 
     getFrame(frameSet, frameSetId, frameIndex);
 }
 
-// Object -> sheetAsset()
-export const createSheetAssetFromConfig = (sheetAssetConfig, defaults = {}) =>
-  sheetAssetConfig.frameSet ?
-    createSheetAsset(
-      sheetAssetConfig.src.image,
-      sheetAssetConfig.width || defaults.width,
-      sheetAssetConfig.height || defaults.height,
-      sheetAssetConfig.frameSet
+// Object -> imsha()
+export const createImshaFromConfig = (imshaConfig, defaults = {}) =>
+  imshaConfig.frameSet ?
+    createImsha(
+      imshaConfig.src.image,
+      imshaConfig.width || defaults.width,
+      imshaConfig.height || defaults.height,
+      imshaConfig.frameSet
     ) :
-    createSimpleSheetAsset(
-      sheetAssetConfig.src.image,
-      sheetAssetConfig.width || defaults.width,
-      sheetAssetConfig.height || defaults.height,
-      sheetAssetConfig.frames
+    createSimpleImsha(
+      imshaConfig.src.image,
+      imshaConfig.width || defaults.width,
+      imshaConfig.height || defaults.height,
+      imshaConfig.frames
     );
 
-// Object -> String | undefined -> sheetAsset() | {sheetAsset()}
-export const createSheetAssetSet = (sheetAssetSetConfig, defaults = {})  => {
-  const sheetAssetSet = Object.keys(sheetAssetSetConfig).reduce((sheetAssetSet, configId) => {
-    sheetAssetSet[configId] = createSheetAssetFromConfig(sheetAssetSetConfig[configId], defaults);
-    return sheetAssetSet;
+// Object -> String | undefined -> imsha() | {imsha()}
+export const createImshaSet = (imshaSetConfig, defaults = {})  => {
+  const imshaSet = Object.keys(imshaSetConfig).reduce((imshaSet, configId) => {
+    imshaSet[configId] = createImshaFromConfig(imshaSetConfig[configId], defaults);
+    return imshaSet;
   }, {});
 
-  return (sheetAssetId) => {
-    if (typeof sheetAssetId === 'undefined')
-      return sheetAssetSet;
-    else if (sheetAssetSet[sheetAssetId])
-      return sheetAssetSet[sheetAssetId];
+  return (imshaId) => {
+    if (typeof imshaId === 'undefined')
+      return imshaSet;
+    else if (imshaSet[imshaId])
+      return imshaSet[imshaId];
     else
-      throw `The provided game image id '${ sheetAssetId }' was not found in this game image set`;
+      throw `The provided game image id '${ imshaId }' was not found in this game image set`;
   }
 }

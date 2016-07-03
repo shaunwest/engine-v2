@@ -1,16 +1,16 @@
 import { createBasicAnimation } from './basic-animation.js';
 import { createWaitCycleAnimation } from './wait-cycle-animation.js';
 
-// gameAnimationSetConfig, sheetAssetSet -> gameAnimationSet
-export const createGameAnimationSet = (gameAnimationSetConfig, sheetAssetSet) => {
+// gameAnimationSetConfig, imshaSet -> gameAnimationSet
+export const createGameAnimationSet = (gameAnimationSetConfig, imshaSet) => {
   const gameAnimationSet = Object.keys(gameAnimationSetConfig).reduce((gameAnimationSet, configId) => {
     const gameAnimationConfig = gameAnimationSetConfig[configId];
-    const { sheetAsset, type, frameSet } = gameAnimationConfig;
+    const { imsha, type, frameSet } = gameAnimationConfig;
 
     switch(type) {
       case 'waitThenCycle':
         gameAnimationSet[configId] = createWaitCycleAnimation(
-          sheetAssetSet(sheetAsset),
+          imshaSet(imsha),
           frameSet.cycle.fps,
           frameSet.cycle.every,
           60
@@ -18,7 +18,7 @@ export const createGameAnimationSet = (gameAnimationSetConfig, sheetAssetSet) =>
         break;
       default:
         gameAnimationSet[configId] = createBasicAnimation(
-          sheetAssetSet(sheetAsset),
+          imshaSet(imsha),
           frameSet.default.fps,
           60
         );

@@ -71,14 +71,14 @@ export const createTileRenderer = (render2d, gameAnimationSet, tileSize, tileMap
   }
 
 
-export const createSpriteRenderer = (render2d, sheetAssetSet) =>
+export const createSpriteRenderer = (render2d, imshaSet) =>
   (sprites, position) => {
     for(const sprite of sprites) {
       if (sprite === null) {
         continue;
       }
       render2d(
-        sheetAssetSet(sprite.sheetAsset)(sprite.currentAnimation, 0),
+        imshaSet(sprite.imsha)(sprite.currentAnimation, 0),
         sprite.x - position.x,
         sprite.y - position.y
       );

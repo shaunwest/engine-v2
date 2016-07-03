@@ -2,13 +2,13 @@
 
 import { getFrameDeviation, getFrame } from './animation';
 
-const waitThenCycle = (sheetAsset, fps, every, targetFps, frameCount) => {
+const waitThenCycle = (imsha, fps, every, targetFps, frameCount) => {
   const frameDeviation = getFrameDeviation(targetFps, fps || targetFps)
   const cycleFrameIndex = Math.floor((frameCount % every) / frameDeviation);
-  return (cycleFrameIndex < sheetAsset('cycle').length) ?
-    sheetAsset('cycle', cycleFrameIndex) :
-    getFrame(sheetAsset('default'), frameDeviation, frameCount);
+  return (cycleFrameIndex < imsha('cycle').length) ?
+    imsha('cycle', cycleFrameIndex) :
+    getFrame(imsha('default'), frameDeviation, frameCount);
 }
 
-export const createWaitCycleAnimation = (sheetAsset, fps, every, targetFps) => frameCount =>
-  waitThenCycle(sheetAsset, fps, every, targetFps, frameCount);
+export const createWaitCycleAnimation = (imsha, fps, every, targetFps) => frameCount =>
+  waitThenCycle(imsha, fps, every, targetFps, frameCount);

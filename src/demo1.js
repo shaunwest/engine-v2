@@ -1,7 +1,7 @@
 import { getElementById, render } from './demo-helpers';
 import { createTimer, getInitialTimerState } from './util/timer.js';
-import { loadSheetAssetConfig } from './sheet-asset/sheet-asset-loader';
-import { createSheetAssetFromConfig } from './sheet-asset/sheet-asset';
+import { loadImshaConfig } from './imsha/imsha-loader';
+import { createImshaFromConfig } from './imsha/imsha';
 import { createWaitCycleAnimation } from './animation/wait-cycle-animation';
 import { createBasicAnimation } from './animation/basic-animation';
 
@@ -10,15 +10,15 @@ import { createBasicAnimation } from './animation/basic-animation';
 const timerState = getInitialTimerState();
 const timer = createTimer(timerState);
 
-loadSheetAssetConfig('/data/mario-sheet-asset.json')
-  .then(sheetAssetConfig => createSheetAssetFromConfig(sheetAssetConfig))
-  .then(sheetAsset => getElementById('marioSheetAsset').appendChild(sheetAsset('idle', 0))); 
+loadImshaConfig('/data/mario-imsha.json')
+  .then(imshaConfig => createImshaFromConfig(imshaConfig))
+  .then(imsha => getElementById('marioAsset').appendChild(imsha('idle', 0))); 
 
-loadSheetAssetConfig('/data/question-sheet-asset.json')
-  .then(sheetAssetConfig => createSheetAssetFromConfig(sheetAssetConfig))
-  .then(sheetAsset => {
+loadImshaConfig('/data/question-imsha.json')
+  .then(imshaConfig => createImshaFromConfig(imshaConfig))
+  .then(imsha => {
     const basicAnimation = createBasicAnimation(
-      sheetAsset,
+      imsha,
       8, 
       60
     );
@@ -29,18 +29,18 @@ loadSheetAssetConfig('/data/question-sheet-asset.json')
 
 const brickAnimationConfig = {
   "description": "brick animation",
-  "sheetAsset": "brickSheetAsset",
+  "imsha": "brickImsha",
   "type": "waitThenCycle",
   "frameSet": {
     "cycle": { "fps": 8, "every": 60 }
   }
 };
 
-loadSheetAssetConfig('/data/brick-sheet-asset.json')
-  .then(sheetAssetConfig => createSheetAssetFromConfig(sheetAssetConfig))
-  .then(sheetAsset => {
+loadImshaConfig('/data/brick-imsha.json')
+  .then(imshaConfig => createImshaFromConfig(imshaConfig))
+  .then(imsha => {
     const cycleAnimation = createWaitCycleAnimation(
-      sheetAsset,
+      imsha,
       brickAnimationConfig.frameSet.cycle.fps, 
       brickAnimationConfig.frameSet.cycle.every,
       60

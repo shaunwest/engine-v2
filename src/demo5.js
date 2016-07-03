@@ -1,6 +1,6 @@
 import { getElementById } from './demo-helpers';
-import { loadSheetAssetSetConfig } from './sheet-asset/sheet-asset-loader.js';
-import { createSheetAssetSet } from './sheet-asset/sheet-asset.js';
+import { loadImshaSetConfig } from './imsha/imsha-loader.js';
+import { createImshaSet } from './imsha/imsha.js';
 import { createGameAnimationSet } from './animation/game-animation-set.js';
 import { createTimer, getInitialTimerState } from './util/timer';
 import { create2dClearer, create2dRenderer, createSpriteRenderer, createTileRenderer } from './util/render';
@@ -11,7 +11,7 @@ import { slice, sliceTileSet, createGameObjectSet } from './game-object/game-obj
 const animationSetConfig = {
   "brick": {
     "description": "brick animation",
-    "sheetAsset": "brick",
+    "imsha": "brick",
     "type": "waitThenCycle",
     "frameSet": {
       "cycle": { "fps": 8, "every": 60 }
@@ -19,7 +19,7 @@ const animationSetConfig = {
   },
   "question": {
     "description": "question animation",
-    "sheetAsset": "question",
+    "imsha": "question",
     "type": "basic",
     "frameSet": {
       "default": { "fps": 8 }
@@ -30,7 +30,7 @@ const animationSetConfig = {
 const spriteTypeSet = {
   "mario": {
     "description": "mario sprite",
-    "sheetAsset": "mario",
+    "imsha": "mario",
     "ai": {
       "type": "basic" 
     },
@@ -145,19 +145,19 @@ const updateTiles = (tileSet, tileSize, view) => {
 // cannot use anonymous functions in loops
 // functional programming in JS just doesn't really work with games
 
-loadSheetAssetSetConfig('/data/all-sheet-assets.json')
-  .then(sheetAssetSetConfig => {
+loadImshaSetConfig('/data/all-imshas.json')
+  .then(imshaSetConfig => {
     const tileSize = 16;
     const view = {
       activeRange: { x: 0, y: 0, width: 100, height: 100 },
       clipRange: { x: 0, y: 0, width: 64, height: 32 }
     };
-    const sheetAssetSet = createSheetAssetSet(sheetAssetSetConfig);
-    const gameAnimationSet = createGameAnimationSet(animationSetConfig, sheetAssetSet);
+    const imshaSet = createImshaSet(imshaSetConfig);
+    const gameAnimationSet = createGameAnimationSet(animationSetConfig, imshaSet);
     const timer = createTimer(getInitialTimerState());
     const spriteSet = createGameObjectSet(spriteSetConfig, spriteTypeSet);
     const renderTiles = createTileRenderer(render2d, gameAnimationSet, tileSize, tileMap);
-    const renderSprites = createSpriteRenderer(render2d, sheetAssetSet);
+    const renderSprites = createSpriteRenderer(render2d, imshaSet);
     
     timer((frameCount, fpsDeviation) => {
       // updates
