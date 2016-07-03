@@ -1,54 +1,27 @@
 import { createTimer, getInitialTimerState } from './timer.js';
 
-const _objectPool = [];
-
-export const getObject = () => {
-  return _objectPool.pop() || {};
-}
-
-export const loop = (update, action) => {
+export const loop = (update, msg) => {
   const timerState = getInitialTimerState();
   const timer = createTimer(timerState);
 
   timer(frameCount => {
-    action = update(action, frameCount);
-    return !action;
+    msg = update(msg, frameCount);
+    return !msg;
   });
   
   return timerState;
 }
 
-export const Msg = (value, next) => ({
-  value,
-  next: typeof next !== 'undefined' ? Msg(next) : { value: '', next: '' } 
-});
+export const EmptyMsg = {
+  value: undefined, next: undefined
+};
 
-export const Action = (msg, nextOrModel, model) => {
-  const obj = getObject();
-
-  if (typeof nextOrModel === 'string') {
-    obj['msg'] = Msg(msg, nextOrModel);
-    obj['model'] = model;
-  } else {
-    obj['msg'] = Msg(msg);
-    obj['model'] = nextOrModel;
+export const Msg = value => {
+  const msg = { value };
+  return next => {
+    msg.next = next || EmptyMsg;
+    return msg;
   }
-
-  return obj;
-}
-
-export const PropAction = (model, key, resultAction) => {
-  return Action(resultAction.msg.value, prop(model, key, resultAction.model));
-}
-
-export const SubPropAction = (model, key, subKey, resultAction) => {
-  return Action(resultAction.msg.value, subProp(model, key, subKey, resultAction.model));
-}
-
-export const modify = (obj, key, value) => {
-  const newObj = poolClone(obj);
-  newObj[key] = value;
-  return newObj;
 }
 
 export const prop = (obj, key, value) => {
@@ -64,10 +37,4 @@ export const subProp = (obj, key, subKey, value) => {
 export const delta = (obj, key, amount) => {
   obj[key] += amount;
   return obj;
-}
-
-export const poolClone = obj => {
-  const newObj = getObject();
-  _objectPool.push(obj);
-  return Object.assign(newObj, obj);
 }
